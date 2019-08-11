@@ -64,13 +64,9 @@ function mapearLinhas(arr) {
         return false;
     }
 
-    // Region so para exemplificar
-    console.log("Diagona Esquerda Superior -> Direita Inferior");
-
-    console.table(montarDiagonalEsqSupDirInf(arr.length));
-
-    console.log("Diagona Esquerda Inferior -> Direita Superior");
-    console.table(montarDiagonalEsqInfDirSup(arr.length));
+    for (let i = 0; i < arr.length; i++) {
+        console.table(montarDiagonalEsqInfDirSup(i + 1));
+    }
 
     return true;
 }
