@@ -67,7 +67,7 @@ function mapearLinhas(arr) {
     // Region so para exemplificar
     console.log("Diagona Esquerda Superior -> Direita Inferior");
 
-    console.table(montarDiagonalEsqSupDirInfDirSup(arr.length));
+    console.table(montarDiagonalEsqSupDirInf(arr.length));
 
     console.log("Diagona Esquerda Inferior -> Direita Superior");
     console.table(montarDiagonalEsqInfDirSup(arr.length));
