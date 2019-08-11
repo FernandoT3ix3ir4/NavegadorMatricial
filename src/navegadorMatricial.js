@@ -91,6 +91,8 @@ function montarDiagonalEsqSupDirInf(qtdeCols) {
     return diag_es_di;
 }
 
+
+
 function montarDiagonalEsqInfDirSup(qtdeCols) {
 
     let diag_ei_ds = [];
