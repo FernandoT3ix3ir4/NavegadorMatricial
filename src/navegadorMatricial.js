@@ -15,16 +15,13 @@ btnGerarMatriz.addEventListener("click", function () {
     }
 
     desenharTabela();
-    // console.table(data);
 });
 
 function desenharTabela() {
 
-
     if (!mapearLinhas(data)) return;
 
     var pTabelas = document.getElementById("pTabelas");
-
 
     while (pTabelas.firstChild) pTabelas.removeChild(pTabelas.firstChild);
 
@@ -45,8 +42,6 @@ function desenharTabela() {
 
         for (var j = 0; j < data[i].length; j++) {
             var celula = criarElementosHtml("td", row);
-            // console.log(data[i][j]);
-
             celula.innerHTML = data[i][j];
             celula.style.background = 'white';
         }
@@ -65,28 +60,32 @@ function mapearLinhas(arr) {
     }
 
     let teste = [];
-    let controleTamanho = 1;
-    let isTheEnd = false;
+    let controleColuna = 0;
     for (let i = 0; i < arr.length; i++) {
 
-
-        teste.push(montarDiagonalEsqInfDirSupQtde(i, controleTamanho));
-        controleTamanho++;
-
-        if (comparadorArrayMultiDimensionalComArraySimples(teste[teste.length - 1], montarDiagonalEsqInfDirSup(data))) {
-            isTheEnd = true;
-            let controleTamanho = arr.length;
-            for (let j = 0; j < arr.length; j++) {
-
-                teste.push(montarDiagonalEsqInfDirSupQtde(j, controleTamanho));
-                controleTamanho--;
+        let diag_ei_ds = [];
+        let controleLinha = i;
 
 
+        for (let j = 0; j <= i; j++) {
+            let linha = controleLinha;
 
+            if (linha < 0) break;
+
+            let coluna = j;
+            diag_ei_ds.push(data[linha][coluna]);
+            controleLinha--;
+
+            if (coluna == arr.length - 1 && linha < coluna) {
+
+                i = arr.length - 1;
+                controleLinha = i;
+                j = controleColuna++;
+                teste.push(diag_ei_ds);
+                diag_ei_ds = [];
             }
         }
-
-        if (isTheEnd) break;
+        teste.push(diag_ei_ds);
     }
 
 
@@ -141,7 +140,6 @@ function montarDiagonalEsqInfDirSup(array) {
     let iMax = array.length - 1;
 
     for (let j = 0; j < array.length; j++) {
-        // let linha = j === 0 ? iMax : iMax - j;
         let linha = iMax;
         diag_ei_ds.push(array[linha][j]);
         iMax--;
@@ -153,14 +151,9 @@ function montarDiagonalEsqInfDirSup(array) {
 function montarDiagonalEsqInfDirSupQtde(indice, qtde) {
 
     let diag_ei_ds = [];
-    let iMax = qtde - 1;
+    let iMax = qtde;
 
-    if (indice === qtde)
-        diag_ei_ds.push(data[qtde][indice]);
-
-
-
-    for (let i = indice; i < qtde; i++) {
+    for (let i = indice; i <= qtde; i++) {
         let linha = iMax;
 
         let coluna = i;
