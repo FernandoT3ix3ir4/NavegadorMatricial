@@ -64,47 +64,125 @@ function mapearLinhas(arr) {
         return false;
     }
 
+    let teste = [];
+    let controleTamanho = 1;
+    let isTheEnd = false;
     for (let i = 0; i < arr.length; i++) {
-        console.table(montarDiagonalEsqInfDirSup(i + 1));
+
+
+        teste.push(montarDiagonalEsqInfDirSupQtde(i, controleTamanho));
+        controleTamanho++;
+
+        if (comparadorArrayMultiDimensionalComArraySimples(teste[teste.length - 1], montarDiagonalEsqInfDirSup(data))) {
+            isTheEnd = true;
+            let controleTamanho = arr.length;
+            for (let j = 0; j < arr.length; j++) {
+
+                teste.push(montarDiagonalEsqInfDirSupQtde(j, controleTamanho));
+                controleTamanho--;
+
+
+
+            }
+        }
+
+        if (isTheEnd) break;
     }
+
+
+    console.table(teste);
 
     return true;
 }
 
-function montarDiagonalEsqSupDirInf(qtdeCols) {
+function comparadorArrayMultiDimensionalComArraySimples(arrayMulti, arraySimples) {
+    let identicos = false;
+    for (let i = 0; i < arrayMulti.length; i++) {
+        if (arrayMulti[i] === arraySimples[i])
+            identicos = true;
+        else {
+
+            identicos = false;
+            break;
+        }
+
+    }
+
+    return identicos;
+}
+
+function montarDiagonalEsqSupDirInf(array) {
 
     let diag_es_di = [];
 
-    let escalador = 1;
-    for (let i = 0; i < qtdeCols; i++) {
-        if (i === 0)
-            diag_es_di.push(i);
-        else {
-            diag_es_di.push((+diag_es_di[i - 1] + escalador) + (qtdeCols));
-        }
+    for (let i = 0; i < array.length; i++) {
+
+        diag_es_di.push(array[i][i]);
     }
 
     return diag_es_di;
 }
 
+function montarDiagonalEsqSupDirInfQtde(array) {
 
+    let diag_es_di = [];
 
-function montarDiagonalEsqInfDirSup(qtdeCols) {
+    for (let i = 0; i < array.length; i++) {
+
+        diag_es_di.push(array[i][i]);
+    }
+
+    return diag_es_di;
+}
+
+function montarDiagonalEsqInfDirSup(array) {
 
     let diag_ei_ds = [];
+    let iMax = array.length - 1;
 
-    let iMax = (qtdeCols) - 1;
-
-    for (let i = 0; i < qtdeCols; i++) {
-        if (i === 0) {
-            diag_ei_ds.push((qtdeCols * qtdeCols) - qtdeCols);
-            continue;
-        }
-
-        diag_ei_ds.push((+diag_ei_ds[i - 1] - iMax));
+    for (let j = 0; j < array.length; j++) {
+        // let linha = j === 0 ? iMax : iMax - j;
+        let linha = iMax;
+        diag_ei_ds.push(array[linha][j]);
+        iMax--;
     }
 
     return diag_ei_ds;
+}
+
+function montarDiagonalEsqInfDirSupQtde(indice, qtde) {
+
+    let diag_ei_ds = [];
+    let iMax = qtde - 1;
+
+    if (indice === qtde)
+        diag_ei_ds.push(data[qtde][indice]);
+
+
+
+    for (let i = indice; i < qtde; i++) {
+        let linha = iMax;
+
+        let coluna = i;
+        diag_ei_ds.push(data[linha][coluna]);
+        iMax--;
+    }
+
+
+    return diag_ei_ds;
+}
+
+function varredorDiagBaixoParaCima(indice, tamanho) {
+    let retorno = [];
+    const iMax = tamanho - 1;
+
+    for (let i = indice; i < tamanho; i++) {
+        let linha = i === indice ? iMax : iMax - i;
+        retorno.push(data[linha][i]);
+
+    }
+
+    return retorno;
 }
 
 function geradorNumeros() {
@@ -115,4 +193,62 @@ function criarElementosHtml(tag, pai) {
     var el = document.createElement(tag);
     pai.appendChild(el);
     return el;
+}
+
+
+function varredorDiagonaisArray(arr) {
+    if ((arr || []).length === 0) return;
+    const iMax = (arr.length * arr.length) - 1;
+    const indiceMaxLinhaEColuna = (arr.length - 1);
+    let result = [];
+    let primeiraRodada = true;
+    let montouDiagonalUltimaLinha = false;
+
+
+    while (primeiraRodada && result.length < iMax) {
+        let arrrr = [];
+
+        for (let i = 0; i < arr.length; i++) {
+            let indiceControleLinha = i;
+            let indiceControleColuna = 0;
+            arrrr = []
+
+            for (let j = 0; j <= i; j++) {
+
+                if (!montouDiagonalUltimaLinha) {
+                    if (arr.indexOf((arr[indiceControleLinha][j] || [])) <= iMax &&
+                        i <= indiceMaxLinhaEColuna &&
+                        j <= indiceMaxLinhaEColuna) {
+
+                        arrrr.push(arr[indiceControleLinha][j]);
+                        indiceControleLinha = indiceControleLinha-- < 0 ? 0 : indiceControleLinha--;
+                    }
+
+                } else {
+                    indiceControleColuna = j + 1;
+                    if (Array.prototype.indexOf((arr[indiceControleLinha][indiceControleColuna] || [])) <= iMax &&
+                        i <= indiceMaxLinhaEColuna &&
+                        j <= indiceMaxLinhaEColuna) {
+
+                        arrrr.push(arr[indiceControleLinha][indiceControleColuna]);
+                        indiceControleLinha = indiceControleLinha-- < 0 ? 0 : indiceControleLinha--;
+                    }
+
+                }
+
+                console.table(arrrr);
+                console.table(montarDiagonalEsqInfDirSup(arr.length));
+                if (arrrr === montarDiagonalEsqInfDirSup(arr.length)) {
+                    montouDiagonalUltimaLinha = true;
+                    j = 0;
+                    indiceControleLinha = i;
+                }
+            }
+
+            result.push(arrrr);
+        }
+
+        primeiraRodada = false;
+    }
+    console.table(result);
 }
