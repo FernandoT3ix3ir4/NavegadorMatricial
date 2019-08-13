@@ -14,12 +14,12 @@ btnGerarMatriz.addEventListener("click", function () {
         data.push(arr);
     }
 
-    desenharTabela();
+    desenharTabela(data);
 });
 
-function desenharTabela() {
+function desenharTabela(array) {
 
-    if (!mapearLinhas(data)) return;
+    if (!mapearLinhas(array)) return;
 
     var pTabelas = document.getElementById("pTabelas");
 
@@ -29,20 +29,55 @@ function desenharTabela() {
 
     var titleRow = criarElementosHtml("tr", table);
     criarElementosHtml("th", titleRow);
-    for (var j = 0; j < data[0].length; j++) {
+    for (var j = 0; j < array[0].length; j++) {
         var tituloColuna = criarElementosHtml("th", titleRow);
         tituloColuna.innerHTML = "Col " + (j + 1);
     }
 
-    for (var i = 0; i < data.length; i++) {
+    for (var i = 0; i < array.length; i++) {
         var row = criarElementosHtml("tr", table);
 
         var tituloLinha = criarElementosHtml("th", row);
         tituloLinha.innerHTML = "Row " + (i + 1);
 
-        for (var j = 0; j < data[i].length; j++) {
+        for (var j = 0; j < array[i].length; j++) {
             var celula = criarElementosHtml("td", row);
-            celula.innerHTML = data[i][j];
+            celula.innerHTML = array[i][j];
+            celula.style.background = 'white';
+        }
+    }
+}
+
+function desenharTabelaResultado(array) {
+
+    var pTabelaResultado = document.getElementById("pTabelaResultado");
+
+    if (!pTabelaResultado) return;
+
+    
+    while (pTabelaResultado.firstChild) pTabelaResultado.removeChild(pTabelaResultado.firstChild);
+    
+    var tituloResultado = criarElementosHtml("h1", pTabelaResultado);
+    tituloResultado.innerHTML = "::RESULTADO::";
+
+    var table = criarElementosHtml("table", pTabelaResultado);
+
+    var titleRow = criarElementosHtml("tr", table);
+    criarElementosHtml("th", titleRow);
+    for (var j = 0; j < array[0].length; j++) {
+        var tituloColuna = criarElementosHtml("th", titleRow);
+        tituloColuna.innerHTML = "Col " + (j + 1);
+    }
+
+    for (var i = 0; i < array.length; i++) {
+        var row = criarElementosHtml("tr", table);
+
+        var tituloLinha = criarElementosHtml("th", row);
+        tituloLinha.innerHTML = "Row " + (i + 1);
+
+        for (var j = 0; j < array[i].length; j++) {
+            var celula = criarElementosHtml("td", row);
+            celula.innerHTML = array[i][j];
             celula.style.background = 'white';
         }
     }
@@ -90,7 +125,7 @@ function mapearLinhas(arr) {
 
 
     console.table(teste);
-
+    desenharTabelaResultado(teste)
     return true;
 }
 
